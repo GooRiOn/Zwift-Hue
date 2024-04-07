@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZwiftHue", "src\ZwiftHue.csproj", "{455B063B-DBFF-4FBC-8235-DB93E3A3960A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{455B063B-DBFF-4FBC-8235-DB93E3A3960A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455B063B-DBFF-4FBC-8235-DB93E3A3960A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455B063B-DBFF-4FBC-8235-DB93E3A3960A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455B063B-DBFF-4FBC-8235-DB93E3A3960A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
