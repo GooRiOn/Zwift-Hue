@@ -41,22 +41,23 @@ public sealed class ZwiftClient
 
     public async IAsyncEnumerable<ZwiftActivityData> GetActivityDataAsync(string zwiftId, CancellationToken cancellationToken)
     {
+        
         var url = $"{_options.Value.Host}/relay/worlds/1/players/{zwiftId}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Authorization", $"Bearer {_authData.AccessToken}");
         request.Headers.Add("Accept", $"application/x-protobuf-lite");
         request.Headers.Add("User-Agent", "Zwift/115 CFNetwork/758.0.2 Darwin/15.0.0");
-
+        
         var response = await _httpClient.SendAsync(request, cancellationToken);
-
+        
         if (response.IsSuccessStatusCode is false)
         {
             throw new ZwiftHueException("Could not scrap activity data");
         }
-
+        
         while (cancellationToken.IsCancellationRequested is false)
         {
-            var stream = await request.Content.ReadAsStreamAsync(cancellationToken);
+            var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
             var playerState = PlayerState.Parser.ParseFrom(stream);
             yield return new ZwiftActivityData(playerState.Power, (playerState.CadenceUHz * 60)/ 1_000_000, playerState.Heartrate);
             await Task.Delay(3_000, cancellationToken);

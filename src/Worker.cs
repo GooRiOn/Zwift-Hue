@@ -21,9 +21,6 @@ public class Worker : BackgroundService
     {
         string username, password, zwiftId;
         
-        await _hueClient.SetLightsColorAsync(123, [0, 0], stoppingToken);
-
-        
         while (true)
         {
             Console.WriteLine("Zwift username");
@@ -46,13 +43,22 @@ public class Worker : BackgroundService
             Console.ReadKey();
             Console.Clear();
         }
+
+        string currentZone = "";
         
-
-
-        await foreach (var data in _zwiftClient.GetActivityDataAsync(zwiftId, stoppingToken))
+        await foreach (var data in _zwiftClient.GetActivityDataAsync("6001929", stoppingToken))
         {
+            Console.WriteLine($"Current power: {data.Power}");
+
             var powerZoneColor = ZwiftPowerZoneConverter.GetPowerZoneColor(60, data.Power);
-            await _hueClient.SetLightsColorAsync(powerZoneColor.hue, powerZoneColor.xy, stoppingToken);
+
+            if (powerZoneColor.Zone == currentZone)
+            {
+                continue;
+            }
+
+            currentZone = powerZoneColor.Zone;
+            await _hueClient.SetLightsColorAsync(powerZoneColor.Hue, powerZoneColor.Xy, stoppingToken);
         }
     }
 }
