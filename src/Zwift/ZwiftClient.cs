@@ -39,7 +39,7 @@ public sealed class ZwiftClient
         return true;
     }
 
-    public async IAsyncEnumerable<ZwiftActivityData> GetActivityDataAsync(int zwiftId, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<ZwiftActivityData> GetActivityDataAsync(string zwiftId, CancellationToken cancellationToken)
     {
         var url = $"{_options.Value.Host}/relay/worlds/1/players/{zwiftId}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
