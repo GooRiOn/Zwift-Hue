@@ -19,6 +19,8 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        await _hueClient.InitAsync(stoppingToken);
+        
         string username, password, zwiftId;
         
         while (true)
@@ -45,17 +47,17 @@ public class Worker : BackgroundService
         }
 
         string currentZone = "";
-        int counter = 1;
+        int offTheZone = 0;
+        int delay = 1_000;
 
         while (stoppingToken.IsCancellationRequested is false)
         {
-            await Task.Delay(5_000, stoppingToken);
+            await Task.Delay(delay, stoppingToken);
             
             var (isScrapped, data) = await _zwiftClient.GetActivityDataAsync(zwiftId, stoppingToken);
 
             if (isScrapped is false)
             {
-                Console.WriteLine($"SKIP: {counter}");
                 continue;
             }
 
@@ -63,13 +65,22 @@ public class Worker : BackgroundService
 
             if (powerZoneColor.Zone == currentZone)
             {
+                offTheZone = 0;
+                delay = 1_000;
+                continue;
+            }
+            
+            offTheZone++;
+
+            if (offTheZone < 2)
+            {
+                delay = 1_000;
                 continue;
             }
 
             currentZone = powerZoneColor.Zone;
-            await _hueClient.SetLightsColorAsync(powerZoneColor.Hue, powerZoneColor.Xy, stoppingToken);
-
-            counter++;
+            delay = 5_000;
+            await _hueClient.SetLightsColorAsync(powerZoneColor.Hue, powerZoneColor.Xy, HueEffects.None, stoppingToken);
         }
     }
 }

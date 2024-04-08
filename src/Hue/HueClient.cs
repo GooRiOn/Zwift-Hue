@@ -17,13 +17,19 @@ public sealed class HueClient
         _options = options;
     }
 
-    public async Task SetLightsColorAsync(int hue, float[] xy, CancellationToken cancellationToken)
+    public Task InitAsync(CancellationToken cancellationToken)
+        => SetLightsColorAsync(0, [0f,0f], HueEffects.Colorloop, cancellationToken);
+
+
+    public async Task SetLightsColorAsync(int hue, float[] xy, string effect, CancellationToken cancellationToken)
     {
         var hueRequest = new HueRequest
         {
             Hue = hue,
-            Xy = xy
+            Xy = xy,
+            Effect = effect
         };
+        
         var json = JsonSerializer.Serialize(hueRequest);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         

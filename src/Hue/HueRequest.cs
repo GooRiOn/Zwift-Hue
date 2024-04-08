@@ -12,4 +12,7 @@ public class HueRequest
     
     [JsonPropertyName("xy")]
     public float[] Xy { get; set; }
+
+    [JsonPropertyName("effect")]
+    public string Effect { get; set; } = HueEffects.None;
 }

@@ -18,6 +18,7 @@ public static class ZwiftPowerZoneConverter
             < 104 => new("yellow", 11151, [0.462f, 0.4761f]),
             < 118 => new("orange", 5972, [0.5698f, 0.3997f]),
             > 118 => new("red", 240, [0.6866f, 0.312f]),
+            _ => new("grey",4000, [0.3144f, 0.3225f])
         };
     }
 }
