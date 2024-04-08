@@ -39,9 +39,8 @@ public sealed class ZwiftClient
         return true;
     }
 
-    public async IAsyncEnumerable<ZwiftActivityData> GetActivityDataAsync(string zwiftId, CancellationToken cancellationToken)
+    public async Task<(bool isScreapped, ZwiftActivityData? data)> GetActivityDataAsync(string zwiftId, CancellationToken cancellationToken)
     {
-        
         var url = $"{_options.Value.Host}/relay/worlds/1/players/{zwiftId}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Authorization", $"Bearer {_authData.AccessToken}");
@@ -52,15 +51,13 @@ public sealed class ZwiftClient
         
         if (response.IsSuccessStatusCode is false)
         {
-            throw new ZwiftHueException("Could not scrap activity data");
+            return (false, default);
         }
         
-        while (cancellationToken.IsCancellationRequested is false)
-        {
-            var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            var playerState = PlayerState.Parser.ParseFrom(stream);
-            yield return new ZwiftActivityData(playerState.Power, (playerState.CadenceUHz * 60)/ 1_000_000, playerState.Heartrate);
-            await Task.Delay(3_000, cancellationToken);
-        }
+        var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        var playerState = PlayerState.Parser.ParseFrom(stream);
+        Console.WriteLine($"Current power from stream : {playerState.Power}");
+
+        return (true, new ZwiftActivityData(playerState.Power, (playerState.CadenceUHz * 60)/ 1_000_000, playerState.Heartrate));
     }
 }

@@ -45,12 +45,21 @@ public class Worker : BackgroundService
         }
 
         string currentZone = "";
-        
-        await foreach (var data in _zwiftClient.GetActivityDataAsync("6001929", stoppingToken))
-        {
-            Console.WriteLine($"Current power: {data.Power}");
+        int counter = 1;
 
-            var powerZoneColor = ZwiftPowerZoneConverter.GetPowerZoneColor(60, data.Power);
+        while (stoppingToken.IsCancellationRequested is false)
+        {
+            await Task.Delay(5_000, stoppingToken);
+            
+            var (isScrapped, data) = await _zwiftClient.GetActivityDataAsync(zwiftId, stoppingToken);
+
+            if (isScrapped is false)
+            {
+                Console.WriteLine($"SKIP: {counter}");
+                continue;
+            }
+
+            var powerZoneColor = ZwiftPowerZoneConverter.GetPowerZoneColor(200, data.Power);
 
             if (powerZoneColor.Zone == currentZone)
             {
@@ -59,6 +68,8 @@ public class Worker : BackgroundService
 
             currentZone = powerZoneColor.Zone;
             await _hueClient.SetLightsColorAsync(powerZoneColor.Hue, powerZoneColor.Xy, stoppingToken);
+
+            counter++;
         }
     }
 }
