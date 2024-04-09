@@ -1,6 +1,3 @@
-using System.Net.Http.Json;
-using Grpc.Net.Client;
-using ZwiftHue;
 using ZwiftHue.Hue;
 using ZwiftHue.Zwift;
 
@@ -61,7 +58,7 @@ public class Worker : BackgroundService
                 continue;
             }
 
-            var powerZoneColor = ZwiftPowerZoneConverter.GetPowerZoneColor(200, data.Power);
+            var powerZoneColor = ZwiftPowerZoneConverter.GetPowerZoneColor(228, data.Power);
 
             if (powerZoneColor.Zone == currentZone)
             {
