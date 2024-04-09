@@ -4,7 +4,7 @@
 Philips Hue ligts automation based on power scrapped from Zwift.
 
 # Idea
-I've been riding on Zwift for a half a year now and I love it! Mostly because it pushed me towards better shape with each single workout. But as a "geek" I was trying to motivate myself even more with some tech wired into my "cycling ecosystem". An inspiration came after watching great cyclist from Poland on [Karol Classy Rider]([http://](https://www.youtube.com/watch?v=Vhw5O_2MI-8&t=426s) channel. He uses LED stripes plugged to Zwift which color matches power zone.
+I've been riding on Zwift for a half a year now and I love it! Mostly because it pushed me towards better shape with each single workout. But as a "geek" I was trying to motivate myself even more with some tech wired into my "cycling ecosystem". An inspiration came after watching great cyclist from Poland on [Karol Classy Rider](https://www.youtube.com/watch?v=Vhw5O_2MI-8&t=426s) channel. He uses LED stripes plugged to Zwift which color matches power zone.
 
 ![karol](./docs/karol.png)
 
