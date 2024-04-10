@@ -64,7 +64,8 @@ BODY
     "bri":254,
     "hue":14314,
     "effect":"none",
-    "xy":[0.4791,0.4139]}
+    "xy":[0.4791,0.4139]
+}
 ```
 
 - `on` - switches lamp on/off
@@ -76,3 +77,12 @@ BODY
 Those are the parameters you can find in the colors converter from last paragraph :)
 
 # Features
+- [x] Basic Zwift's API scrap
+- [ ] UI for desktop app
+- [ ] Mobile app
+- [ ] Rider configuration persistence + selection based on Zwift's credentials
+- [ ] Deal with on-edge power zones workouts
+- [ ] Custom power zones/colors definition
+- [ ] HR based Hue's effects
+- [ ] HR-based control for fans
+- [ ] ANT+ protocol support for bike trainers instead of Zwift's API

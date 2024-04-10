@@ -58,7 +58,7 @@ public class Worker : BackgroundService
                 continue;
             }
 
-            var powerZoneColor = ZwiftPowerZoneConverter.GetPowerZoneColor(228, data.Power);
+            var powerZoneColor = ZwiftPowerZoneConverter.GetPowerZoneColor(135, data.Power);
 
             if (powerZoneColor.Zone == currentZone)
             {
