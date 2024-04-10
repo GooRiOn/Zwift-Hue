@@ -36,7 +36,43 @@ Having a rider's power it's time to convert it to the specific color that matche
 
 ![power_zones](./docs/power_zones.png)
 
+Converter is implmented [here](./src/Zwift/ZwiftPowerZoneConverter.cs) and "mysterious" values put in there are taken from "reversed engineered" colors set via mobile app. I simply set the color on the lamp and fetched the calculated data from Hue's API to not waste the time. More on that in next section.
+
+In a future I need to improve the color convertion. That is because Zwift's workout target power often are on the high-end of the specific zone. This means that even small power difference will put you back and forth from one zone to another. 
 
 ### Setting Philips Hue lamps
+This one was the easiest one. First, I found the Philips Hue Bridge in local network using
+
+```bash
+arg -a
+```
+
+As a result I got the IP address. To verify you have a right one, go to the browser and type
+
+```
+https://<local_IP_of_bridge>/debug/clip.html
+```
+
+You should see simple page that allows you to specify requests to your bridge. Thanks to that [repo](https://github.com/tigoe/hue-control) I found that setting up the specific color leads to endpoint
+
+```bash
+PUT http://<local_IP_of_bridge>/api/lights/<light_id>/state
+
+BODY
+{
+    "on":true,
+    "bri":254,
+    "hue":14314,
+    "effect":"none",
+    "xy":[0.4791,0.4139]}
+```
+
+- `on` - switches lamp on/off
+- `bri` - brightness (0-255)
+- `hue` - color (0-65535)
+- `effect` - "none" or "colorloop"
+- `xy` - x y position in CIE1031 colorspace
+
+Those are the parameters you can find in the colors converter from last paragraph :)
 
 # Features
