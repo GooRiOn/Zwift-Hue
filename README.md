@@ -18,9 +18,24 @@ So, to make that thing work we need three things:
 2. Translate power into color that matches power zone calculated based on FTP
 3. Set the Hue lights with the calculated color
 
-### Scrapping the Zwift API
+### Getting the power from Zwift's API
+First try on getting data has been based on [Zwift Packet Monitor](https://github.com/braddwalker/ZwiftPacketMonitor) project that exposes few events, including the one that is emmited by the player a.k.a rider. This unfortunatelly is not possible to be used due to the Zwift's encryption changes that put most of the "udp-packet-based" apporaches to en end.
+
+Therfore, current implementation is based on long polling Zwift's API that I found inside [zwift-client](https://github.com/jsmits/zwift-client) written in Python. Thanks to that every second the rider's state is fetched and transformed further. The state contains multiple usefull information that I'm going to utilize in a future:
+- Power
+- Cadence
+- Speed (km/h)
+- HR
+- Ride On
+- Boosts
+
+and many more! Full list can be found in [this](./src/Protos/zwift.proto) proto file.
 
 ### Calculating power zone color
+Having a rider's power it's time to convert it to the specific color that matches power zone. Fortunatelly, Zwift provides easy to implement [formula](https://zwiftinsider.com/power-zone-colors/) for that:
+
+![power_zones](./docs/power_zones.png)
+
 
 ### Setting Philips Hue lamps
 
