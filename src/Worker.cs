@@ -18,7 +18,7 @@ public class Worker : BackgroundService
     {
         await _hueClient.InitAsync(stoppingToken);
         
-        string username, password, zwiftId;
+        string username, password;
         
         while (true)
         {
@@ -27,9 +27,6 @@ public class Worker : BackgroundService
         
             Console.WriteLine("Zwift password");
             password = Console.ReadLine();
-            
-            Console.WriteLine("Zwift ID");
-            zwiftId = Console.ReadLine();
         
             var isSucceeded = await _zwiftClient.AuthenticateAsync(username, password, stoppingToken);
         
@@ -43,6 +40,9 @@ public class Worker : BackgroundService
             Console.Clear();
         }
 
+        var profile = await _zwiftClient.GetProfileAsync(stoppingToken);
+        Console.WriteLine($"Welcome back {profile.FirstName}!");
+        
         string currentZone = "";
         int offTheZone = 0;
         int delay = 1_000;
@@ -51,7 +51,7 @@ public class Worker : BackgroundService
         {
             await Task.Delay(delay, stoppingToken);
             
-            var (isScrapped, data) = await _zwiftClient.GetActivityDataAsync(zwiftId, stoppingToken);
+            var (isScrapped, data) = await _zwiftClient.GetActivityDataAsync(profile.Id, stoppingToken);
 
             if (isScrapped is false)
             {
