@@ -83,8 +83,7 @@ Those are the parameters you can find in the colors converter from last paragrap
 
 # Features
 - [x] Basic Zwift's API scrap
-- [ ] UI for desktop app
-- [ ] Mobile app
+- [ ] UI with API
 - [ ] Rider configuration persistence + selection based on Zwift's credentials
 - [ ] Deal with on-edge power zones workouts
 - [ ] Custom power zones/colors definition
