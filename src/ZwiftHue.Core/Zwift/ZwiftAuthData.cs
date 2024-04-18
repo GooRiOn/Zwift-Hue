@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ZwiftHue.Zwift;
+namespace ZwiftHue.Core.Zwift;
 
 public class ZwiftAuthData
 {

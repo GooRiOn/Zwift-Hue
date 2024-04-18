@@ -1,4 +1,7 @@
-namespace ZwiftHue.Hue;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace ZwiftHue.Core.Hue;
 
 public static class Extensions
 {

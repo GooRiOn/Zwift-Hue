@@ -1,4 +1,4 @@
-namespace ZwiftHue.Zwift.DTO;
+namespace ZwiftHue.Core.Zwift.DTO;
 
 public class ZwiftProfileDto
 {

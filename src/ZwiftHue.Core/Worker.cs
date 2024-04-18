@@ -1,7 +1,8 @@
-using ZwiftHue.Hue;
-using ZwiftHue.Zwift;
+using Microsoft.Extensions.Hosting;
+using ZwiftHue.Core.Hue;
+using ZwiftHue.Core.Zwift;
 
-namespace ZwiftHue;
+namespace ZwiftHue.Core;
 
 public class Worker : BackgroundService
 {

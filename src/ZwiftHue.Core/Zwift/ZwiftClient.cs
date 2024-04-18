@@ -1,9 +1,8 @@
 using System.Text.Json;
 using Microsoft.Extensions.Options;
-using ZwiftHue.Exceptions;
-using ZwiftHue.Zwift.DTO;
+using ZwiftHue.Core.Zwift.DTO;
 
-namespace ZwiftHue.Zwift;
+namespace ZwiftHue.Core.Zwift;
 
 public sealed class ZwiftClient
 {

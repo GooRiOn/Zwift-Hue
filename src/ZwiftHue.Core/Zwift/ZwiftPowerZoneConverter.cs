@@ -1,6 +1,4 @@
-using ZwiftHue.Exceptions;
-
-namespace ZwiftHue.Zwift;
+namespace ZwiftHue.Core.Zwift;
 
 //https://zwiftinsider.com/power-zone-colors/
 

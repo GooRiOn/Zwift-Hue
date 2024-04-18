@@ -1,4 +1,4 @@
-namespace ZwiftHue.Exceptions;
+namespace ZwiftHue.Core.Exceptions;
 
 public class ZwiftHueException : Exception
 {

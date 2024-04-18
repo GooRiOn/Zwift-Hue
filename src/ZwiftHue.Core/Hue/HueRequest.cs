@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ZwiftHue.Hue;
+namespace ZwiftHue.Core.Hue;
 
 public class HueRequest
 {
