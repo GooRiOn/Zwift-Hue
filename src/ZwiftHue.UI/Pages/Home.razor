@@ -1,8 +1,9 @@
 ﻿@page "/"
-
+@inject ApiClient ApiClient
 
 
 @using System.ComponentModel.DataAnnotations
+@using ZwiftHue.UI.Clients
 
 <EditForm Model="@model" OnValidSubmit="Login">
     <DataAnnotationsValidator/>
@@ -24,7 +25,7 @@
 
 @code {
     RiderLoginModel model = new();
-
+    
     public class RiderLoginModel
     {
         [Required]
@@ -35,8 +36,10 @@
         public string Password { get; set; }
     }
 
-    private void Login(EditContext context)
+   
+    private async Task Login(EditContext context)
     {
+        var isSuccesfull = await ApiClient.LoginAsync(model);
         StateHasChanged();
     }
 
