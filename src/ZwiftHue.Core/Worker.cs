@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Hosting;
-using ZwiftHue.Core.Hue;
-using ZwiftHue.Core.Zwift;
+using ZwiftHue.Core.Infrastructure.Hue;
+using ZwiftHue.Core.Infrastructure.Zwift;
 
 namespace ZwiftHue.Core;
 

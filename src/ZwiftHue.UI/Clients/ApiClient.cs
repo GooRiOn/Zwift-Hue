@@ -1,5 +1,7 @@
 using System.Net.Http.Json;
-using ZwiftHue.UI.Pages;
+using System.Text.Json;
+using ZwiftHue.UI.Models;
+using ZwiftHue.UI.Models.Write;
 
 namespace ZwiftHue.UI.Clients;
 
@@ -16,9 +18,19 @@ public class ApiClient
         _httpClient.BaseAddress = new Uri(Host);
     }
 
-    public async Task<bool> LoginAsync(Home.RiderLoginModel model)
+    public async Task<bool> LoginAsync(RiderLoginModel model)
     {
         var response = await _httpClient.PostAsync("/login", JsonContent.Create(model));
         return response.IsSuccessStatusCode;
+    }
+    
+    public async Task<ZwiftProfileDto> GetProfileAsync()
+    {
+        var response = await _httpClient.GetAsync("/me");
+        var json = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<ZwiftProfileDto>(json, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        })!;
     }
 }

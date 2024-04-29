@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ZwiftHue.Core.Zwift;
+namespace ZwiftHue.Core.Infrastructure.Zwift;
 
 public static class Extensions
 {
@@ -11,6 +11,7 @@ public static class Extensions
     {
         services.Configure<ZwiftOptions>(configuration.GetSection(SectionName));
         services.AddHttpClient<ZwiftClient>();
+        services.AddSingleton<ZwiftAuthData>();
         return services;
     }
 }

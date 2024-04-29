@@ -1,8 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ZwiftHue.Core.Commands;
-using ZwiftHue.Core.Hue;
-using ZwiftHue.Core.Zwift;
+using ZwiftHue.Core.Infrastructure.Hue;
+using ZwiftHue.Core.Infrastructure.Zwift;
+using ZwiftHue.Core.Queries;
 
 namespace ZwiftHue.Core;
 
@@ -13,7 +14,8 @@ public static class Extensions
         services
             .AddZwift(configuration)
             .AddHue(configuration)
-            .AddCommands();
+            .AddCommands()
+            .AddQueries();
         
         return services;
     }

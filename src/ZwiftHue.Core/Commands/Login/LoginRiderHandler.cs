@@ -1,5 +1,5 @@
 using ZwiftHue.Core.Exceptions;
-using ZwiftHue.Core.Zwift;
+using ZwiftHue.Core.Infrastructure.Zwift;
 
 namespace ZwiftHue.Core.Commands.Login;
 

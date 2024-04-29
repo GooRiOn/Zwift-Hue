@@ -1,4 +1,4 @@
-namespace ZwiftHue.Core.Hue;
+namespace ZwiftHue.Core.Infrastructure.Hue;
 
 public static class HueEffects
 {

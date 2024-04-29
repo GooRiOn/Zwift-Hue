@@ -1,19 +1,19 @@
 using System.Text.Json;
 using Microsoft.Extensions.Options;
-using ZwiftHue.Core.Zwift.DTO;
+using ZwiftHue.Core.Infrastructure.Zwift.DTO;
 
-namespace ZwiftHue.Core.Zwift;
+namespace ZwiftHue.Core.Infrastructure.Zwift;
 
 public sealed class ZwiftClient
 {
     private readonly HttpClient _httpClient;
     private readonly IOptions<ZwiftOptions> _options;
-
     private ZwiftAuthData _authData;
 
-    public ZwiftClient(HttpClient httpClient, IOptions<ZwiftOptions> options)
+    public ZwiftClient(HttpClient httpClient, ZwiftAuthData authData, IOptions<ZwiftOptions> options)
     {
         _httpClient = httpClient;
+        _authData = authData;
         _options = options;
     }
 
@@ -35,7 +35,9 @@ public sealed class ZwiftClient
         }
             
         var json = await response.Content.ReadAsStringAsync(cancellationToken);
-        _authData = JsonSerializer.Deserialize<ZwiftAuthData>(json)!;
+        var authData = JsonSerializer.Deserialize<ZwiftAuthData>(json)!;
+        _authData.AccessToken = authData.AccessToken;
+        _authData.RefreshToken = authData.RefreshToken;
         return true;
     }
 

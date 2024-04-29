@@ -1,46 +1,63 @@
 ﻿@page "/"
 @inject ApiClient ApiClient
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 
-@using System.ComponentModel.DataAnnotations
 @using ZwiftHue.UI.Clients
+@using ZwiftHue.UI.Models
+@using ZwiftHue.UI.Models.Write
 
-<EditForm Model="@model" OnValidSubmit="Login">
-    <DataAnnotationsValidator/>
-    <MudGrid>
-        <MudItem xs="12" sm="12">
-            <MudCard>
-                <MudCardContent>
-                    <MudTextField Label="Email" Class="mt-3" @bind-Value="model.Email" For="@(() => model.Email)"/>
-                    <MudTextField Label="Password"  Class="mt-3" @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" Class="ml-auto">Login</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-</EditForm>
+@if (profile is null)
+{
+    <EditForm Model="@model" OnValidSubmit="Login">
+        <DataAnnotationsValidator/>
+        <MudGrid>
+            <MudItem xs="12" sm="12">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="Email" Class="mt-3" @bind-Value="model.Email" For="@(() => model.Email)"/>
+                        <MudTextField Label="Password"  Class="mt-3" @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" Class="ml-auto">Login</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+}
+else
+{
+    <H1>HELLO @profile.FirstName!</H1>
+}
+
 
 
 @code {
     RiderLoginModel model = new();
-    
-    public class RiderLoginModel
-    {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+    ZwiftProfileDto? profile;
 
-        [Required]
-        public string Password { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        profile = await LocalStorage.GetItemAsync<ZwiftProfileDto>("profile");
+        await base.OnInitializedAsync();
     }
 
-   
     private async Task Login(EditContext context)
     {
         var isSuccesfull = await ApiClient.LoginAsync(model);
+
+        if (isSuccesfull)
+        {
+            await GetProfileAsync();
+        }
+        
         StateHasChanged();
     }
 
+    private async Task GetProfileAsync()
+    {
+        profile = await ApiClient.GetProfileAsync();
+        await LocalStorage.SetItemAsync("profile", profile);
+    }
 }

@@ -2,7 +2,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 
-namespace ZwiftHue.Core.Hue;
+namespace ZwiftHue.Core.Infrastructure.Hue;
 
 public sealed class HueClient
 {

@@ -1,4 +1,4 @@
-namespace ZwiftHue.Core.Zwift;
+namespace ZwiftHue.Core.Infrastructure.Zwift;
 
 public class ZwiftOptions
 {
