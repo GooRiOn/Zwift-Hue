@@ -32,12 +32,6 @@
     
 
     <ItemGroup>
-      <Folder Include="Infrastructure\" />
-    </ItemGroup>
-    
-    
-
-    <ItemGroup>
       <Protobuf Include="Infrastructure\Zwift\Protos\zwift.proto">
         <Generator>MSBuild:Compile</Generator>
       </Protobuf>
