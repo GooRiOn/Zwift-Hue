@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ZwiftHue.Core.Commands;
 using ZwiftHue.Core.Infrastructure.Channels;
 using ZwiftHue.Core.Infrastructure.Hue;
+using ZwiftHue.Core.Infrastructure.ProfileConfigs;
 using ZwiftHue.Core.Infrastructure.Zwift;
 using ZwiftHue.Core.Queries;
 
@@ -15,6 +16,7 @@ public static class Extensions
         services
             .AddZwift(configuration)
             .AddHue(configuration)
+            .AddRiderConfigurations()
             .AddCommands()
             .AddQueries()
             .AddChannel();
