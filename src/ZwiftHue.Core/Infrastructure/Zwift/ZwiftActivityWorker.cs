@@ -33,7 +33,6 @@ public class ZwiftActivityWorker : BackgroundService
             };
         }
     }
-    
 
     private async Task ProcessActivityAsync(int userId, CancellationToken stoppingToken)
     {

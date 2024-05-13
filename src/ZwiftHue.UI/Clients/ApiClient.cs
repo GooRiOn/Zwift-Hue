@@ -27,10 +27,21 @@ public class ApiClient
     public async Task<ZwiftProfileDto> GetProfileAsync()
     {
         var response = await _httpClient.GetAsync("/me");
+
+        if (response.IsSuccessStatusCode is false)
+        {
+            return default;
+        }
+        
         var json = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<ZwiftProfileDto>(json, new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         })!;
+    }
+    
+    public async Task StartActivityAsync(int userId)
+    {
+        var response = await _httpClient.PostAsync($"/activity/{userId}/start", default);
     }
 }

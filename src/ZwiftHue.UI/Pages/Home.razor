@@ -29,8 +29,10 @@
 else
 {
     <H1>HELLO @profile.FirstName!</H1>
+    <br/>
+    <H3>Current FTP: @profile.Ftp W</H3>
+    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="() => StartActivity()">Start Activity</MudButton>
 }
-
 
 
 @code {
@@ -39,7 +41,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        profile = await LocalStorage.GetItemAsync<ZwiftProfileDto>("profile");
+        await GetProfileAsync();
         await base.OnInitializedAsync();
     }
 
@@ -58,6 +60,16 @@ else
     private async Task GetProfileAsync()
     {
         profile = await ApiClient.GetProfileAsync();
+        
+        if (profile is null)
+        {
+            return;
+        }
         await LocalStorage.SetItemAsync("profile", profile);
+    }
+    
+    private async Task StartActivity()
+    {
+        await ApiClient.StartActivityAsync(profile.Id);
     }
 }

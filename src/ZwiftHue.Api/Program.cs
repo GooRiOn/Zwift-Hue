@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
 using ZwiftHue.Api.Middlewares;
 using ZwiftHue.Core;
 using ZwiftHue.Core.Commands;
 using ZwiftHue.Core.Commands.Login;
+using ZwiftHue.Core.Commands.StartActivity;
 using ZwiftHue.Core.Infrastructure.Zwift.DTO;
 using ZwiftHue.Core.Queries;
 using ZwiftHue.Core.Queries.GetProfile;
@@ -29,9 +31,11 @@ app.UseMiddleware<ErrorMiddleware>();
 app.UseCors("Policy");
 
 app.MapGet("/", () => "Zwift Hue API");
-app.MapPost("/login", (LoginRider command, ICommandHandler<LoginRider> handler, CancellationToken cancellationToken) =>
-    handler.HandleAsync(command, cancellationToken));
 app.MapGet("/me", (IQueryHandler<GetProfile, ZwiftProfileDto> handler, CancellationToken cancellationToken) =>
     handler.HandleAsync(new GetProfile(), cancellationToken));
+app.MapPost("/login", (LoginRider command, ICommandHandler<LoginRider> handler, CancellationToken cancellationToken) =>
+    handler.HandleAsync(command, cancellationToken));
+app.MapPost("/activity/{userId:int}/start", ([FromRoute] int userId, ICommandHandler<StartActivity> handler, CancellationToken cancellationToken) =>
+    handler.HandleAsync(new StartActivity(userId), cancellationToken));
 
 app.Run();

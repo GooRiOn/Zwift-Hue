@@ -9,4 +9,5 @@ public class ZwiftProfileDto
     public bool Riding { get; set; }
     public int? WorldId { get; set; }
     public int Age { get; set; }
+    public int Ftp { get; set; }
 }
