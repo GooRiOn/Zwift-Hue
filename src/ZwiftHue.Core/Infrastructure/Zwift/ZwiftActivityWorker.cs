@@ -5,6 +5,7 @@ using ZwiftHue.Core.Commands.StartActivity;
 using ZwiftHue.Core.Exceptions;
 using ZwiftHue.Core.Infrastructure.Channels;
 using ZwiftHue.Core.Infrastructure.Hue;
+using ZwiftHue.Core.Infrastructure.ProfileConfigs;
 
 namespace ZwiftHue.Core.Infrastructure.Zwift;
 
@@ -39,13 +40,18 @@ public class ZwiftActivityWorker : BackgroundService
         var scope = _serviceProvider.CreateScope();
         var hueClient = scope.ServiceProvider.GetRequiredService<HueClient>();
         var zwiftClient = scope.ServiceProvider.GetRequiredService<ZwiftClient>();
+        var configProvider = scope.ServiceProvider.GetRequiredService<IRiderProfileConfigurationProvider>();
+        var powerZoneConverter= scope.ServiceProvider.GetRequiredService<IZwiftPowerZoneConverter>();
         
-        await hueClient.InitAsync(stoppingToken);
-        
-        string currentZone = "";
-        int offTheZone = 0;
-        int delay = 1_000;
+        var profile = await zwiftClient.GetProfileAsync(stoppingToken);
+        var configuration = await configProvider.GetConfigurationAsync(userId, stoppingToken);
 
+        if (configuration.LightsOnActivityStart)
+        {
+            await hueClient.InitAsync(stoppingToken);
+        }
+
+        var delay = configuration.PowerRefreshMilliseconds;
         while (stoppingToken.IsCancellationRequested is false)
         {
             await Task.Delay(delay, stoppingToken);
@@ -57,24 +63,14 @@ public class ZwiftActivityWorker : BackgroundService
                 continue;
             }
 
-            var powerZoneColor = ZwiftPowerZoneConverter.GetPowerZoneColor(238, data.Power);
+            var powerZoneColor = powerZoneConverter.ConvertPowerZoneColor(data.Power, profile.Ftp, configuration);
 
-            if (powerZoneColor.Zone == currentZone)
+            if (powerZoneColor is null)
             {
-                offTheZone = 0;
-                delay = 1_000;
-                continue;
-            }
-            
-            offTheZone++;
-
-            if (offTheZone < 2)
-            {
-                delay = 1_000;
+                delay = configuration.PowerRefreshMilliseconds;
                 continue;
             }
 
-            currentZone = powerZoneColor.Zone;
             delay = 5_000;
             await hueClient.SetLightsColorAsync(powerZoneColor.Hue, powerZoneColor.Xy, HueEffects.None, stoppingToken);
         }

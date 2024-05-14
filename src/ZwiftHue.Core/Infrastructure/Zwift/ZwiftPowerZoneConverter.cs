@@ -1,10 +1,36 @@
+using ZwiftHue.Core.Infrastructure.ProfileConfigs;
+
 namespace ZwiftHue.Core.Infrastructure.Zwift;
 
 //https://zwiftinsider.com/power-zone-colors/
 
-public static class ZwiftPowerZoneConverter
+public sealed class ZwiftPowerZoneConverter : IZwiftPowerZoneConverter
 {
-    public static ZwiftPowerZoneColor GetPowerZoneColor(int ftp, int power)
+    private ZwiftPowerZoneColor? _currentZoneColor;
+    private int _zoneMisses = 0;
+    
+    public ZwiftPowerZoneColor? ConvertPowerZoneColor(int power, int ftp, RiderProfileConfiguration configuration)
+    {
+        var powerZoneColor = GetPowerZoneColor(ftp, power);
+
+        if (powerZoneColor.Zone == _currentZoneColor?.Zone)
+        {
+            _zoneMisses = 0;
+            return default;
+        }
+
+        _zoneMisses++;
+
+        if (_zoneMisses < configuration.PowerZoneMissRatio)
+        {
+            return default;
+        }
+
+        _currentZoneColor = powerZoneColor;
+        return _currentZoneColor;
+    }
+    
+    private static ZwiftPowerZoneColor GetPowerZoneColor(int ftp, int power)
     {
         var ratio = Math.Ceiling(power * 100f/ ftp);
 

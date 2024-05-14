@@ -17,5 +17,5 @@ public class RiderProfileConfigurationDto
 {
     public int Id { get; set; }
     public bool LightsOnActivityStart { get; set; }
-    public int PowerZoneDiffPercentageToleration { get; set; }
+    public int PowerZoneMissRatio { get; set; }
 }

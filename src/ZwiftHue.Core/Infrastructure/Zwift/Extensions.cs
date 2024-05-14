@@ -12,6 +12,7 @@ public static class Extensions
         services.Configure<ZwiftOptions>(configuration.GetSection(SectionName));
         services.AddHttpClient<ZwiftClient>();
         services.AddSingleton<ZwiftAuthData>();
+        services.AddSingleton<IZwiftPowerZoneConverter, ZwiftPowerZoneConverter>();
         services.AddHostedService<ZwiftActivityWorker>();
         return services;
     }

@@ -21,7 +21,7 @@ public class GetRiderProfileHandler(ZwiftClient zwiftClient, IRiderProfileConfig
             Configuration = new RiderProfileConfigurationDto
             {
                 LightsOnActivityStart = configuration.LightsOnActivityStart,
-                PowerZoneDiffPercentageToleration = configuration.PowerZoneDiffPercentageToleration
+                PowerZoneMissRatio = configuration.PowerZoneMissRatio
             }
         };
     }
